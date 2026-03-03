@@ -51,7 +51,7 @@ public class Reservation extends BaseTimeEntity {
      */
     public void cancel() {
         // TODO: 개발자가 직접 작성함 (상태 검증, 좌석 해제 로직 등)
-        this.reservationStatus = ReservationStatus.CANCELLED;
+        this.reservationStatus = ReservationStatus.CANCELED;
     }
 
     /**
@@ -72,6 +72,6 @@ public class Reservation extends BaseTimeEntity {
      * 취소된 예매인지 확인
      */
     public boolean isCancelled() {
-        return this.reservationStatus == ReservationStatus.CANCELLED;
+        return this.reservationStatus == ReservationStatus.CANCELED;
     }
 }
