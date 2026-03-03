@@ -3,6 +3,7 @@ package eunji.ticketing.response;
 import eunji.ticketing.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
@@ -16,23 +17,29 @@ public class ErrorResponse {
     private final String code;
     private final LocalDateTime timestamp;
 
-    public static ErrorResponse of(ErrorCode errorCode) {
-        return ErrorResponse.builder()
+    public static ResponseEntity<ErrorResponse> of(ErrorCode errorCode) {
+        ErrorResponse response = ErrorResponse.builder()
                 .success(false)
                 .status(errorCode.getHttpStatus().value())
                 .message(errorCode.getMessage())
                 .code(errorCode.getCode())
                 .timestamp(LocalDateTime.now())
                 .build();
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(response);
     }
 
-    public static ErrorResponse of(ErrorCode errorCode, String message) {
-        return ErrorResponse.builder()
+    public static ResponseEntity<ErrorResponse> of(ErrorCode errorCode, String message) {
+        ErrorResponse response = ErrorResponse.builder()
                 .success(false)
                 .status(errorCode.getHttpStatus().value())
                 .message(message)
                 .code(errorCode.getCode())
                 .timestamp(LocalDateTime.now())
                 .build();
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(response);
     }
 }
