@@ -9,17 +9,14 @@ public record SeatInfoResponseDto(
         Long seatId,
         Integer seatRow,
         Integer seatColumn,
-        String seatNumber,
         String seatGrade,
         String status
 ) {
     public static SeatInfoResponseDto from(Seat seat) {
-        String seatNumber = seat.getZone().name() + seat.getSeatRow() + "-" + seat.getSeatColumn();
         return new SeatInfoResponseDto(
                 seat.getSeatId(),
                 seat.getSeatRow(),
                 seat.getSeatColumn(),
-                seatNumber,
                 seat.getSeatGrade().name(),
                 seat.getSeatStatus().name()
         );
