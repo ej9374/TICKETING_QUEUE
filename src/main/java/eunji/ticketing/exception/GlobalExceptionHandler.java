@@ -24,9 +24,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponse> handleBizException(BizException e) {
-        ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse response = ErrorResponse.of(errorCode, e.getMessage());
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(e.getErrorCode(), e.getMessage());
     }
 
     /**
@@ -40,8 +38,7 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .orElse(ErrorCode.INVALID_INPUT_VALUE.getMessage());
 
-        ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, message);
-        return ResponseEntity.status(ErrorCode.INVALID_INPUT_VALUE.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, message);
     }
 
     /**
@@ -50,9 +47,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        ErrorCode errorCode = ErrorCode.INVALID_TYPE_VALUE;
-        ErrorResponse response = ErrorResponse.of(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE);
     }
 
     /**
@@ -61,9 +56,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
-        ErrorResponse response = ErrorResponse.of(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
     }
 
     /**
@@ -72,9 +65,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
-        ErrorResponse response = ErrorResponse.of(errorCode, e.getParameterName() + " 파라미터가 필요합니다.");
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, e.getParameterName() + " 파라미터가 필요합니다.");
     }
 
     /**
@@ -83,9 +74,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        ErrorCode errorCode = ErrorCode.METHOD_NOT_ALLOWED;
-        ErrorResponse response = ErrorResponse.of(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED);
     }
 
     /**
@@ -94,9 +83,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {
-        ErrorCode errorCode = ErrorCode.RESOURCE_NOT_FOUND;
-        ErrorResponse response = ErrorResponse.of(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.RESOURCE_NOT_FOUND);
     }
 
     /**
@@ -105,8 +92,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-        ErrorResponse response = ErrorResponse.of(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+        return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 }

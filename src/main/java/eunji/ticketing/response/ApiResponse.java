@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import eunji.ticketing.exception.SuccessCode;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
@@ -19,23 +21,35 @@ public class ApiResponse<T> {
     private final T data;
     private final LocalDateTime timestamp;
 
-    public static <T> ApiResponse<T> success(T data) {
-        return of(SuccessCode.OK, data);
+    public static <T> ResponseEntity<ApiResponse<T>> success(T data) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(build(SuccessCode.OK, data));
     }
 
-    public static <T> ApiResponse<T> success(SuccessCode successCode, T data) {
-        return of(successCode, data);
+    public static <T> ResponseEntity<ApiResponse<T>> success(SuccessCode successCode, T data) {
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(build(successCode, data));
     }
 
-    public static ApiResponse<Void> created() {
-        return of(SuccessCode.CREATED, null);
+    public static ResponseEntity<ApiResponse<Void>> created() {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(build(SuccessCode.CREATED, null));
     }
 
-    public static <T> ApiResponse<T> created(T data) {
-        return of(SuccessCode.CREATED, data);
+    public static <T> ResponseEntity<ApiResponse<T>> created(T data) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(build(SuccessCode.CREATED, data));
     }
 
     public static <T> ApiResponse<T> of(SuccessCode successCode, T data) {
+        return build(successCode, data);
+    }
+
+    private static <T> ApiResponse<T> build(SuccessCode successCode, T data) {
         return ApiResponse.<T>builder()
                 .success(true)
                 .status(successCode.getHttpStatus().value())
